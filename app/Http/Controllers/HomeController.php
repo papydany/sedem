@@ -1831,6 +1831,35 @@ $reorder = DB::table('drugs')
   //dd($reorder);
  return view('home.displaystockreorder')->withR($reorder)->withSd($date);
           }
+
+  //======================= profit and loss report =====================================
+          function profit_loss()
+          {
+            $store =Store::get();
+            return view('home.profit_loss')->withS($store);
+          }
+   function postprofit_loss(Request $request)
+          {
+            $this->validate($request,array(
+     'store_id'=>'required',
+      's_date'=>'required',
+        'e_date'=>'required',
+      ));
+          
+    $store_id = $request->store_id; 
+  $s_date = $request->s_date; 
+  $e_date = $request->e_date;          
+
+$s =Store::where('id',$store_id)->first();
+
+
+$ex =RunningCost::where('store_id',$store_id)->whereDate('date','>=',$s_date)->whereDate('date','<=',$e_date)->get()->groupBy('code');
+
+$total_sum =Order::where([['store_id',$store_id],['status',0]])->whereDate('order_date','>=',$s_date)->whereDate('order_date','<=',$e_date)->get();
+$profit =$total_sum->sum('total') -$total_sum->sum('bought_price_total'); 
+
+return view('home.display_profit_loss')->withEx($ex)->withSd($s_date)->withEd($e_date)->withS($s)->withP($profit);
+  }         
     //-------------------------------------------------------------------------------------------------------
 public function getlga($id)
 {

@@ -20,7 +20,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Generate Daily Purchase</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('dailypurchase') }}" target="_blank">
+                    <form class="form-horizontal" role="form" method="POST" action="{{ url('profit_loss') }}" target="_blank">
                         {{ csrf_field() }}
                       
 
@@ -28,7 +28,7 @@
                             <label for="drug_name" class="col-md-4 control-label">Select Store</label>
 
                             <div class="col-md-6">
-                            <select class="form-control" name="store" required>
+                            <select class="form-control" name="store_id" required>
                             <option value="">-- select --</option>
                             @foreach($s as $v)
                             <option value="{{$v->id}}">{{$v->store_name}}</option>

@@ -74,11 +74,7 @@ public function getleafdate($id){
             case $id == 3:
                 
                   return "Terminated";
-                break;
-                
-            
-            
-        }
+                break; }
     
 } 
  
@@ -113,12 +109,17 @@ public function getleafdate($id){
 
     return $drugs;
     } 
-
+ 
     public function get_paidcreditor($id)
     {
 
   $paid = Ledger::where('parent_id',$id)->orderBy('id','DESC')->get();
 
     return $paid;
+    }
+    public function grtpersonalaccount($code)
+    {
+      $get_personal_account =PersonelAccount::where('account_code',$code)->first();
+      return  $get_personal_account;
     }
 }	

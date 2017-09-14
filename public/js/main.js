@@ -113,6 +113,7 @@ $('#s').click(function(){
 
 $('#complete').click(function(event){ 
 event.preventDefault();
+  
  $("#myModal").modal(); 
 
  $.post("order",
@@ -120,6 +121,7 @@ event.preventDefault();
        total:$('input[name=total]').val(),
       customer:$('input[name=customer]').val(),
       phone:$('input[name=phone]').val(),
+     bought_price:$('input[name=bought_price]').val(),
       subtotal:$('input[name=subtotal]').val(),
       card_number:$('input[name=card_number]').val(),
       payment_type:$('input[type=radio][name=payment_type]:checked').val(),

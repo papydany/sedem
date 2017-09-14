@@ -117,6 +117,8 @@ Route::post('/stockreorder', ['uses' =>'HomeController@poststockreorder','middle
 Route::get('/debtors_report', ['uses' =>'HomeController@debtors_report','middleware' => 'roles','roles'=>['supperadmin','admin']]);
 Route::post('/debtors_report', ['uses' =>'HomeController@postdebtors_report','middleware' => 'roles','roles'=>['supperadmin','admin']]);
 Route::get('/debtors', ['uses' =>'HomeController@debtors','middleware' => 'roles','roles'=>['supperadmin','admin']]);
+Route::get('/profit_loss', ['uses' =>'HomeController@profit_loss','middleware' => 'roles','roles'=>['supperadmin','admin']]);
+Route::post('/profit_loss', ['uses' =>'HomeController@postprofit_loss','middleware' => 'roles','roles'=>['supperadmin','admin']]);
 // --------------------create account route-------------------------------------------------------------
 Route::get('/createaccount', ['uses' =>'HomeController@createaccount','middleware' => 'roles','roles'=>['supperadmin','admin']]);
 Route::post('/createaccount', ['uses' =>'HomeController@post_createaccount','middleware' => 'roles','roles'=>['supperadmin','admin']]);

@@ -53,7 +53,7 @@ class CashierController extends Controller
         if($request->has('search')) {
       $drug_name = $request->search;
 
-$drug = Drug::where([['drug_name',$drug_name],['store_id',Auth::user()->store_id]])->first();
+$drug = Drug::where([['drug_name',$drug_name],['store_id',Auth::user()->store_id]])->orderBy('id','DESC')->first();
 
 if(count($drug) > 0){
     $drug_qty =DrugsQty::where([['drugsname_id',$drug->drugname_id],['store_id',Auth::user()->store_id],['qty','>',0]])->first();
@@ -62,7 +62,7 @@ if(count($drug_qty) == 0)
  Session::flash('warning',"please restock these drug");
    
 }else{
-    Cart::add(array('id' => $drug->id, 'name' => $drug->drug_name, 'qty' =>1, 'price' => $drug->selling_price,'options' => ['drugname_id' => $drug->drugname_id,'vat'=> $drug->selling_vat]));
+    Cart::add(array('id' => $drug->id, 'name' => $drug->drug_name, 'qty' =>1, 'price' => $drug->selling_price,'options' => ['drugname_id' => $drug->drugname_id,'vat'=> $drug->selling_vat,'bought_price'=> $drug->price]));
   
 
    Cart::content();
@@ -76,13 +76,13 @@ if(count($drug_qty) == 0)
       $drug_code = $request->search_code;
     
 
-    $drug = Drug::where([['code',$drug_code],['store_id',Auth::user()->store_id]])->first();
+    $drug = Drug::where([['code',$drug_code],['store_id',Auth::user()->store_id]])->orderBy('id','DESC')->first();
 if(count($drug) > 0){
     $drug_qty =DrugsQty::where([['drugsname_id',$drug->drugname_id],['store_id',Auth::user()->store_id],['qty','>',0]])->first();
 
 if(count($drug_qty) > 0)
 {
-    Cart::add(array('id' => $drug->id, 'name' => $drug->drug_name, 'qty' =>1, 'price' => $drug->selling_price,'options' => ['drugname_id' => $drug->drugname_id]));
+    Cart::add(array('id' => $drug->id, 'name' => $drug->drug_name, 'qty' =>1, 'price' => $drug->selling_price,'options' => ['drugname_id' => $drug->drugname_id,'vat'=> $drug->selling_vat,'bought_price'=> $drug->price]));
     Cart::content();
   }else{ Session::flash('warning',"please restock these drug");}
      }else{Session::flash('warning',"parameters enter those not exist");} 
@@ -163,6 +163,7 @@ $discount_percentage =$discount /100;
  $order->phone = $request->phone;
   $order->payment_type = $request->payment_type;
  $order->order_date = $date;
+  $order->bought_price_total =$request->bought_price;
  $order->total = $request->total;
 $order->subtotal = $request->subtotal;
 $order->vat = $vat;
@@ -181,8 +182,8 @@ $order_id =Order::find($order->id);
  $cart = Cart::content();
 
  foreach ($cart as $key => $value) {
-    $amount = $value->price * $value->qty;
-
+   $amount = $value->price * $value->qty;
+  //$amount = $request->total;
    // find drugqtys and update the quantitydrugsqty
 $drugsqty =DrugsQty::where([['drugsname_id',$value->options->drugname_id],['store_id',Auth::user()->store_id]])->first();
 

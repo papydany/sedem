@@ -44,6 +44,7 @@
 <th>Amount</th>
 </tr>
 {{!!$i = 0}}
+{{!!$bought_price =''}}
 @foreach($c as $v)
 {{!++$i}}
 <tr>
@@ -53,6 +54,7 @@
 <td>{{$v->qty}}</td>
 <td>&#8358;&nbsp;{{number_format($v->qty * $v->price)}}</td>
 </tr>
+<?php $bought_price += $v->qty * $v->options->bought_price; ?>
 @endforeach
 
 <tr>
@@ -70,6 +72,7 @@
 	@else
 	{{! $total = $parsed  }}
 	@endif
+  <input type="hidden" name="bought_price"  value="{{$bought_price}}">
 	<input type="hidden" name="subtotal"  value="{{$parsed}}">
 	<input type="hidden" name="total"  value="{{$total}}">
 
